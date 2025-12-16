@@ -1,0 +1,11 @@
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.db.session import get_db
+from src.repositories.system import SystemRepository
+from src.services.system import SystemService
+
+async def get_system_repo(db: AsyncSession = Depends(get_db)) -> SystemRepository:
+    return SystemRepository(db)
+
+async def get_system_service(repo: SystemRepository = Depends(get_system_repo)) -> SystemService:
+    return SystemService(repo)
